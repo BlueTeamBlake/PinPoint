@@ -4,31 +4,37 @@ from classifier import classify_byte
 
 from classifier import classify_byte
 
-def format_bytes(file_data, remove_non_printable=False):
-    formatted_hex = []
-    formatted_ascii = []
+def format_bytes(data: bytes, remove_non_printable=False) -> str:
     lines = []
+    line_size = 16
 
-    for i, byte in enumerate(file_data):
-        hex_repr, ascii_repr = classify_byte(byte, remove_non_printable)
-        if hex_repr is None:  # Skip non-printable if flag is set
-            continue
+    for i in range(0, len(data), line_size):
+        chunk = data[i:i + line_size]
 
-        formatted_hex.append(hex_repr)
-        formatted_ascii.append(ascii_repr)
+        hex_chunk = []
+        ascii_chunk = []
 
-        if len(formatted_hex) == 16:
-            line = f"{i - 15:08X}  {' '.join(formatted_hex)}  |{''.join(formatted_ascii)}|"
-            lines.append(line)
-            formatted_hex.clear()
-            formatted_ascii.clear()
+        for byte in chunk:
+            if 32 <= byte <= 126:  # Printable ASCII
+                semantic_prefix = "1x"
+                char = chr(byte)
+                hex_chunk.append(f"{semantic_prefix}{byte:02X}")
+                ascii_chunk.append(char)
+            else:
+                # Non-human-readable
+                if remove_non_printable:
+                    continue  # Skip it entirely
+                semantic_prefix = "0x"
+                hex_chunk.append(f"{semantic_prefix}{byte:02X}")
+                ascii_chunk.append(' ')  # Space instead of '.' placeholder
 
-    # Add any remaining bytes (less than 16)
-    if formatted_hex:
-        line = f"{len(file_data) - len(formatted_hex):08X}  {' '.join(formatted_hex)}  |{''.join(formatted_ascii)}|"
-        lines.append(line)
+        offset = f"{i:08X}"
+        hex_str = ' '.join(hex_chunk).ljust(line_size * 5)  # Pad to line width
+        ascii_str = ''.join(ascii_chunk)
+        lines.append(f"{offset}  {hex_str}  |{ascii_str}|")
 
     return '\n'.join(lines)
+
 
 
 def save_to_file(formatted_data: str, output_file: str):
