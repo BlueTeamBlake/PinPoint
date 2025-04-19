@@ -1,5 +1,3 @@
-# test_formatter.py
-
 import sys
 from formatter import format_bytes, save_to_file
 from args_parser import parse_arguments
