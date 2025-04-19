@@ -11,7 +11,7 @@ Takes printable ASCII characters and re-assigns them the prefix 1x##
 
 Takes null values and re-assigns them a prefix 2x##
 
-The srript will then determine which data to keep and throw out allowing an easier view of hex dump data that you can read.
+The script will then determine which data to keep and throw out allowing an easier view of hex dump data that you can read.
 
 
 **Features:**
