@@ -24,7 +24,7 @@ from formatter import format_bytes, save_to_file
 def print_banner():
     print(r"""
     ╔════════════════════════════════════════════╗
-    ║              🔍 Pinpoint v1.0              ║
+    ║                Pinpoint v1.0               ║
     ║     Human-Readable Hex + ASCII Analyzer    ║
     ║       Classifies & Filters Byte Types      ║
     ╚════════════════════════════════════════════╝
