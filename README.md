@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Pinpoint** is a Python tool designed to parse and analyze hex dumps of files, displaying human-readable ASCII representations. It helps you analyze binary files by filtering out the noise that we as humans can't understand. Pinpoint makes it easy to distinguish between printable and non-printable characters, improving the readability of hex dumps.
+**Pinpoint** is a Python tool designed to parse and analyze hex dumps of files, displaying human-readable ASCII representations. It helps analyze binary files by filtering out the noise that we as humans can't understand. Pinpoint makes it easy to distinguish between printable and non-printable characters, improving the readability of hex dumps.
 
 How it works:
 Takes non-printable characters and re-assigns them the prefix 0x##
