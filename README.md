@@ -37,9 +37,11 @@ Takes printable ASCII characters and re-assigns them the prefix 1x##
 python pinpoint.py
 ```
 2. Follow the prompts:
+```
 Please enter the input file (path): C:\Users\You\Desktop\sample.txt
 Please enter the output file (path): output.txt (will save in current Dir if not specified)
 Do you want to remove non-printable characters? (Y/N): Y
+```
 
 Once the program is ran, it will create the output file that can be viewed for analysis. 
    
