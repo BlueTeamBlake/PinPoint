@@ -1,44 +1,28 @@
-# formatter.py
-
 from classifier import classify_byte
 
-from classifier import classify_byte
-
-def format_bytes(byte_data, bytes_per_line=16, remove_non_printable=False):
+def format_bytes(byte_data, bytes_per_line=16):
     lines = []
-
     for i in range(0, len(byte_data), bytes_per_line):
-        chunk = byte_data[i:i + bytes_per_line]
-        hex_bytes = []
-        ascii_chars = []
+        chunk = byte_data[i:i+bytes_per_line]
+        hex_chunk = []
+        ascii_chunk = []
 
-        for byte in chunk:
-            # Hex view: Always include every byte
-            hex_bytes.append(f"{byte:02x}")
-
-            # ASCII view
-            if 0x20 <= byte <= 0x7E:  # Printable ASCII
-                ascii_chars.append(chr(byte))
+        for b in chunk:
+            prefix = classify_byte(b)
+            hex_chunk.append(f"{prefix}{b:02X}")
+            if 32 <= b <= 126:
+                ascii_chunk.append(chr(b))
             else:
-                if remove_non_printable:
-                    ascii_chars.append(' ')  # Replace with space
-                else:
-                    ascii_chars.append('.')  # Keep dot for visibility
+                ascii_chunk.append(".")
 
-        hex_part = ' '.join(hex_bytes).ljust(bytes_per_line * 3)
-        ascii_part = ''.join(ascii_chars)
-        lines.append(f"{hex_part} | {ascii_part}")
+        hex_str = ' '.join(hex_chunk)
+        ascii_str = ''.join(ascii_chunk)
+        
+        # Calculate spacing so the | aligns consistently
+        padding = (bytes_per_line - len(chunk)) * 5  # "1xFF " = 5 characters per byte
+        hex_str_padded = hex_str + ' ' * padding
+        line = f"{i:08X}  {hex_str_padded} |{ascii_str}|"
+        lines.append(line)
 
     return '\n'.join(lines)
-
-def save_to_file(formatted_data: str, output_file: str):
-    """
-    Saves the formatted byte data to a text file.
-    """
-    try:
-        with open(output_file, 'w') as file:
-            file.write(formatted_data)
-        print(f"Formatted data saved to {output_file}")
-    except Exception as e:
-        print(f"Error saving to file: {e}")
 
