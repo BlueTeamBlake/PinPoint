@@ -1,12 +1,13 @@
-def classify_byte(byte, remove_non_printable=False):
-    # Classify as printable only if the byte is human-readable (for ASCII range)
-    if 32 <= byte <= 126:  # Printable ASCII range
-        return f"1x{byte:02X}", chr(byte)  # Format in hex and ASCII
-    elif byte == 0x00:  # Null byte
-        return f"0x{byte:02X}", "."  # Represent null as a dot in ASCII
-    else:  # Non-printable
-        if remove_non_printable:
-            return None, None  # Skip non-printable bytes if flag set to Y
-        return f"2x{byte:02X}", "."  # Represent non-printable in hex and dot in ASCII
+def classify_byte(byte):
+    if byte == 0x00:
+        return "0x"  # Null byte
+    elif byte in (0x09, 0x0A, 0x0D, 0x20):  # Whitespace: tab, LF, CR, space
+        return "0x"
+    elif 0x20 <= byte <= 0x7E:  # Printable ASCII
+        return "1x"
+    elif byte < 0x20 or byte == 0x7F:  # Control characters
+        return "0x"
+    else:
+        return "2x"  # Extended bytes
 
 
